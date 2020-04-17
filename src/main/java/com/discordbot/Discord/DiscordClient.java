@@ -28,7 +28,6 @@ public class DiscordClient extends ListenerAdapter {
             LOGGER.severe("Please update your config.json");
             System.exit(1);
         }
-        LOGGER.info("Using bot token: \"" + token + "\".");
         LOGGER.info("Connecting bot...");
 
         try {
