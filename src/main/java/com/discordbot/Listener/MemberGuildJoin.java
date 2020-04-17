@@ -36,7 +36,7 @@ public class MemberGuildJoin extends ListenerAdapter {
             } else {
                 User inviter = usedInvite.getInviter();
                 if (inviter != null) {
-                    embed.addField("Invite link", "Used invite: " + usedInvite.getCode() + "\n" +
+                    embed.addField("Invite link", "Used invite: [" + usedInvite.getUrl() + "](" + usedInvite.getUrl() + ")\n" +
                             "Issued by: " + inviter.getAsMention() + " | " + inviter.getAsTag() + "\n" +
                             "Issued at: " + usedInvite.getTimeCreated().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), false);
                 } else {
