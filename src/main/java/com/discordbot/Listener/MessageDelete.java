@@ -47,6 +47,9 @@ public class MessageDelete  extends ListenerAdapter {
             embed.setAuthor(oldMessage.getAuthor().getName(), oldMessage.getJumpUrl(), oldMessage.getAuthor().getAvatarUrl());
             embed.setDescription("**Message deleted by " + oldMessage.getAuthor().getAsMention() + " in <#" + event.getChannel().getId() + ">.**");
             embed.addField("**Deleted message**", oldMessage.getContentRaw().substring(0, Math.min(1000, oldMessage.getContentRaw().length())), false);
+            if(oldMessage.getAttachments().size() == 1) {
+                embed.setImage(oldMessage.getAttachments().get(0).getUrl());
+            }
             embed.setFooter("AuthorID: " + oldMessage.getAuthor().getId() + " | MessageID: " + oldMessage.getAuthor().getId());
         } else {
             embed.setDescription("**Message deleted in <#" + event.getChannel().getId() + ">.**\n" +

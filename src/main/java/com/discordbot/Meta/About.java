@@ -5,7 +5,7 @@ public class About {
         return info;
     }
 
-    private static final String info = "Discord Logger by zaanposni for easy moderation and insights of Discord guilds." +
-            "Version: " + VersionInfo.getLongVersion() +
-            "GitHub: https://github.com/zaanposni/DiscordLogger";
+    private static final String info = "Discord Logger by zaanposni for easy moderation and insights of Discord guilds.\n" +
+            "Version: " + VersionInfo.getLongVersion() + "\n" +
+            "GitHub: https://github.com/zaanposni/DiscordModLogger/";
 }

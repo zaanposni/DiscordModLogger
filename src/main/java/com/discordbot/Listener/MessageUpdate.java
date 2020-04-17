@@ -22,6 +22,7 @@ public class MessageUpdate extends ListenerAdapter {
 
     @Override
     public void onMessageUpdate(@Nonnull MessageUpdateEvent event) {
+        // TODO: support media change
         if (Config.getArray("exclude_channels").contains(event.getChannel().getId())) {
             // do not log these channels
             return;

@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class MessageReceived extends ListenerAdapter {
@@ -45,10 +46,14 @@ public class MessageReceived extends ListenerAdapter {
         // Log
         EmbedBuilder embed = new NeutralLogEmbed();
         Message message = event.getMessage();
+        List<Message.Attachment> attachments =  message.getAttachments();
         User author = event.getAuthor();
         embed.setAuthor(author.getName(),event.getMessage().getJumpUrl(), author.getAvatarUrl());
         embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.** [Jump.](" + message.getJumpUrl() + ")");
         embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(1000, message.getContentRaw().length())), false);
+        if(attachments.size() == 1) {
+            embed.setImage(attachments.get(0).getUrl());
+        }
         embed.setFooter("AuthorID: " + author.getId() + " | MessageID: " + message.getId());
         Sender.sendToAllLogChannels(event, embed.build());
     }
