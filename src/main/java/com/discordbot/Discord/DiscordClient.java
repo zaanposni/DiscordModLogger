@@ -35,6 +35,7 @@ public class DiscordClient extends ListenerAdapter {
             JDA jda = JDABuilder.create(token, GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
                     .addEventListeners(new DiscordConnectionHandling())
                     .addEventListeners(new MemberGuildJoin())
+                    .addEventListeners(new MemberGuildLeave())
                     .addEventListeners(new MessageReceived())
                     .addEventListeners(new MessageUpdate())
                     .addEventListeners(new MessageDelete())

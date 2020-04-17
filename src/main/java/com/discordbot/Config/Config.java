@@ -68,7 +68,7 @@ public class Config {
         jsonCFG.put("log_to_channels", new ArrayList<String>());
         jsonCFG.put("exclude_channels", new ArrayList<String>());
         jsonCFG.put("cache_messages", 1000);
-        jsonCFG.put("handle_guilds", new ArrayList<String>());
+        jsonCFG.put("handle_guild", "guild_id_goes_here");
 
         try {
             FileWriter writer = new FileWriter(config);
