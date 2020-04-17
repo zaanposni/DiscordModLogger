@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.events.message.MessageBulkDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 public class MemberGuildJoin extends ListenerAdapter {
@@ -29,7 +30,7 @@ public class MemberGuildJoin extends ListenerAdapter {
 
         LOGGER.info("Fetch which invite the member used.");
         event.getJDA().getGuildById(event.getGuild().getId()).retrieveInvites().queue(success -> {
-            Invite usedInvite = InviteManager.getUsedInviteByGuildID(success, event.getGuild().getId());
+            Invite usedInvite = InviteManager.getUsedInviteByGuildID(success);
             if (usedInvite == null) {
                 LOGGER.info("Could not fetch used invite.");
             } else {
@@ -37,7 +38,7 @@ public class MemberGuildJoin extends ListenerAdapter {
                 if (inviter != null) {
                     embed.addField("Invite link", "Used invite: " + usedInvite.getCode() + "\n" +
                             "Issued by: " + inviter.getAsMention() + " | " + inviter.getAsTag() + "\n" +
-                            "Issued at: " + inviter.getTimeCreated().toString(), false);
+                            "Issued at: " + usedInvite.getTimeCreated().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME), false);
                 } else {
                     embed.addField("Invite link", "Used invite: " + usedInvite.getCode(), false);
                 }

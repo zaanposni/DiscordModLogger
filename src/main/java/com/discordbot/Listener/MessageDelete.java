@@ -49,7 +49,8 @@ public class MessageDelete  extends ListenerAdapter {
             embed.addField("**Deleted message**", oldMessage.getContentRaw().substring(0, Math.min(1000, oldMessage.getContentRaw().length())), false);
             embed.setFooter("AuthorID: " + oldMessage.getAuthor().getId() + " | MessageID: " + oldMessage.getAuthor().getId());
         } else {
-            embed.setDescription("**Message deleted in <#" + event.getChannel().getId() + ">.**");
+            embed.setDescription("**Message deleted in <#" + event.getChannel().getId() + ">.**\n" +
+                    "No further information could be fetched.");
             embed.setFooter("MessageID: " + event.getMessageId() + " | ChannelID: " + event.getChannel().getId());
         }
         Sender.sendToAllLogChannels(event, embed.build());
