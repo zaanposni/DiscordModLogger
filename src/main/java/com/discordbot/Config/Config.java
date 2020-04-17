@@ -26,6 +26,7 @@ public class Config {
     public static Object get(Object key) throws NullPointerException{
         if (!getCfg().containsKey(key)) {
             LOGGER.warning("Did not find config key \"" + key.toString() + "\". Please update your config.");
+            return null;
         }
         return getCfg().get(key);
     }
@@ -38,7 +39,11 @@ public class Config {
     }
 
     public static List<?> getArray(Object key) throws NullPointerException{
-        return ArrayObjectUtil.convertObjectToList(get(key));
+        Object value = get(key);
+        if (value == null) {
+            return null;
+        }
+        return ArrayObjectUtil.convertObjectToList(value);
     }
 
     public static boolean loadConfig() {
@@ -69,6 +74,7 @@ public class Config {
         jsonCFG.put("exclude_channels", new ArrayList<String>());
         jsonCFG.put("cache_messages", 1000);
         jsonCFG.put("handle_guild", "guild_id_goes_here");
+        jsonCFG.put("activity_string", null);
 
         try {
             FileWriter writer = new FileWriter(config);

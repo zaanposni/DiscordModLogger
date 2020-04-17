@@ -1,5 +1,6 @@
 package com.discordbot.Discord;
 
+import com.discordbot.Config.Config;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.events.DisconnectEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
@@ -24,7 +25,10 @@ public class DiscordConnectionHandling extends ListenerAdapter {
         LOGGER.info("Bot connected to Discord API.");
         connected = true;
         InviteManager.fetchInvites(event.getJDA());
-        event.getJDA().getPresence().setActivity(Activity.playing("Stasi Simulator 2020"));
+        Object activity = Config.get("activity_string");
+        if (activity != null) {
+            event.getJDA().getPresence().setActivity(Activity.playing(activity.toString()));
+        }
     }
 
     @Override
