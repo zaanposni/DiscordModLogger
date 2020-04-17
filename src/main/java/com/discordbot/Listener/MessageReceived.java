@@ -47,9 +47,8 @@ public class MessageReceived extends ListenerAdapter {
         Message message = event.getMessage();
         User author = event.getAuthor();
         embed.setAuthor(author.getName(),event.getMessage().getJumpUrl(), author.getAvatarUrl());
-        embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.**");
+        embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.** [Jump.](" + message.getJumpUrl() + ")");
         embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(1000, message.getContentRaw().length())), false);
-        embed.addField("**Jump to message**", "[Click here.](" + message.getJumpUrl() + ")", false);
         embed.setFooter("AuthorID: " + author.getId() + " | MessageID: " + message.getId());
         Sender.sendToAllLogChannels(event, embed.build());
     }
