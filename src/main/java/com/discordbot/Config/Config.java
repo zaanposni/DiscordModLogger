@@ -1,0 +1,83 @@
+package com.discordbot.Config;
+
+import com.discordbot.Discord.DiscordClient;
+import com.discordbot.LocalUtils.ArrayObjectUtil;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
+
+public class Config {
+
+    private final static Logger LOGGER = Logger.getLogger(DiscordClient.class.getName());
+    private static JSONObject cfg;
+
+    public static JSONObject getCfg() {
+        return cfg;
+    }
+
+    public static Object get(Object key) throws NullPointerException{
+        if (!getCfg().containsKey(key)) {
+            LOGGER.warning("Did not find config key \"" + key.toString() + "\". Please update your config.");
+        }
+        return getCfg().get(key);
+    }
+
+    public static Object getWithDefault(Object key, Object defaultValue) {
+        if (!getCfg().containsKey(key)) {
+            return defaultValue;
+        }
+        return get(key);
+    }
+
+    public static List<?> getArray(Object key) throws NullPointerException{
+        return ArrayObjectUtil.convertObjectToList(get(key));
+    }
+
+    public static boolean loadConfig() {
+        try {
+            LOGGER.info("Loading config.");
+            Object obj = new JSONParser().parse(new FileReader("config.json"));
+            cfg = (JSONObject) obj;
+            LOGGER.info("Found " + cfg.keySet().size() + " entries.");
+        } catch(IOException | ParseException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static boolean generateConfig() {
+        LOGGER.info("Generating config.json");
+        File config = new File("./config.json");
+        if (config.exists()) {
+            LOGGER.info("config.json already exists.");
+            return true;
+        }
+
+        JSONObject jsonCFG = new JSONObject();
+        jsonCFG.put("discord_bot_token", "bot_token_goes_here");
+        jsonCFG.put("log_to_channels", new ArrayList<String>());
+        jsonCFG.put("exclude_channels", new ArrayList<String>());
+        jsonCFG.put("cache_messages", 1000);
+        jsonCFG.put("handle_guilds", new ArrayList<String>());
+
+        try {
+            FileWriter writer = new FileWriter(config);
+            writer.write(jsonCFG.toJSONString());
+            writer.close();
+        } catch(IOException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+}
