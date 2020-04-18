@@ -43,16 +43,26 @@ public class MessageReceived extends ListenerAdapter {
         // Cache
         MessageCacher.addMessage(event.getMessage());
 
+        if (!Boolean.parseBoolean(Config.get("log_received_message", "true").toString())) {
+            return;
+        }
+
         // Log
         EmbedBuilder embed = new NeutralLogEmbed();
         Message message = event.getMessage();
-        List<Message.Attachment> attachments =  message.getAttachments();
         User author = event.getAuthor();
         embed.setAuthor(author.getName(),event.getMessage().getJumpUrl(), author.getAvatarUrl());
-        embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.** [Jump.](" + message.getJumpUrl() + ")");
-        embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(1000, message.getContentRaw().length())), false);
-        if(attachments.size() == 1) {
-            embed.setImage(attachments.get(0).getUrl());
+        embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.** [Jump](" + message.getJumpUrl() + ")");
+        if (!message.getContentRaw().isEmpty()) {
+            embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(Integer.parseInt(Config.get("cut_log_messages_to_characters", 1000).toString()), message.getContentRaw().length())), false);
+        }
+        if (message.getAttachments().size() == 1) {
+            String url = message.getAttachments().get(0).getProxyUrl();
+            int pos = url.indexOf("/attachments/");
+            String downloadURL = "https://cdn.discordapp.com" + url.substring(pos);
+            String filename = message.getAttachments().get(0).getFileName();
+            embed.setImage(downloadURL);
+            embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
         }
         embed.setFooter("AuthorID: " + author.getId() + " | MessageID: " + message.getId());
         Sender.sendToAllLogChannels(event, embed.build());

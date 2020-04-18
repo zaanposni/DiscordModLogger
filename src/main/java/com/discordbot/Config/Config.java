@@ -31,7 +31,7 @@ public class Config {
         return getCfg().get(key);
     }
 
-    public static Object getWithDefault(Object key, Object defaultValue) {
+    public static Object get(Object key, Object defaultValue) {
         if (!getCfg().containsKey(key)) {
             return defaultValue;
         }
@@ -75,6 +75,8 @@ public class Config {
         jsonCFG.put("cache_messages", 1000);
         jsonCFG.put("handle_guild", "guild_id_goes_here");
         jsonCFG.put("activity_string", null);
+        jsonCFG.put("log_received_message", true);
+        jsonCFG.put("cut_log_messages_to_characters", 1000);
 
         try {
             FileWriter writer = new FileWriter(config);

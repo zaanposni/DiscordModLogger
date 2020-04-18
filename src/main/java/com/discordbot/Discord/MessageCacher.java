@@ -12,7 +12,7 @@ public class MessageCacher {
     private final static Logger LOGGER = Logger.getLogger(DiscordClient.class.getName());
 
     private static final Map<String, Message> messages = new LinkedHashMap<>();
-    private static final Integer cacheLimit = Integer.parseInt(Config.getWithDefault("cache_messages", 100).toString());
+    private static final Integer cacheLimit = Integer.parseInt(Config.get("cache_messages", 100).toString());
 
     public static void addMessage(Message message) {
         while (messages.size() >= cacheLimit) {
