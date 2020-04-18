@@ -12,6 +12,6 @@ public class VersionInfo {
         return "v." + version + "-" + subVersion;
     }
 
-    private static final String version = "1.0";
+    private static final String version = "1.1";
     private static final String subVersion = "RELEASE";
 }
