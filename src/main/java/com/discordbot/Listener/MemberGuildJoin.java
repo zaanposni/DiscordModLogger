@@ -3,6 +3,7 @@ package com.discordbot.Listener;
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.InviteManager;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.SuccessLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Invite;
@@ -26,7 +27,7 @@ public class MemberGuildJoin extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member joined", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId());
+        embed.setFooter("userID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberJoin");
 
         LOGGER.info("Fetch which invite the member used.");
         event.getJDA().getGuildById(event.getGuild().getId()).retrieveInvites().queue(success -> {

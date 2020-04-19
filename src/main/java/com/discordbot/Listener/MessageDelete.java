@@ -4,10 +4,12 @@ import com.discordbot.Config.Config;
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.MessageCacher;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.FailureLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageType;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -20,15 +22,11 @@ public class MessageDelete  extends ListenerAdapter {
 
     @Override
     public void onMessageDelete(@Nonnull MessageDeleteEvent event) {
-        if (Config.getArray("exclude_channels").contains(event.getChannel().getId())) {
-            // do not log these channels
-            return;
-        }
+        if (Config.getArray("exclude_channels_from_log").contains(event.getChannel().getId()))
+            return; // do not log these channels
 
-        if (event.getChannelType() != ChannelType.TEXT) {
-            // do not log DMs
-            return;
-        }
+        if (event.getChannelType() != ChannelType.TEXT)
+            return; // do not log system messages and DMs
 
         LOGGER.info("Received Message deletion.");
 
@@ -52,11 +50,11 @@ public class MessageDelete  extends ListenerAdapter {
                 embed.setImage(downloadURL);
                 embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
             }
-            embed.setFooter("AuthorID: " + oldMessage.getAuthor().getId() + " | MessageID: " + oldMessage.getAuthor().getId());
+            embed.setFooter("UserID: " + oldMessage.getAuthor().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMessageDelete");
         } else {
             embed.setDescription("**Message deleted in <#" + event.getChannel().getId() + ">.**\n" +
                     "No further information could be fetched.");
-            embed.setFooter("MessageID: " + event.getMessageId() + " | ChannelID: " + event.getChannel().getId());
+            embed.setFooter("UserID: Not fetched | " + UniqueIDHandler.getNewUUID() + " | EventMessageDelete");
         }
         Sender.sendToAllLogChannels(event, embed.build());
     }

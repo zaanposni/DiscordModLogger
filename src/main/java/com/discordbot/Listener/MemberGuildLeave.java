@@ -2,6 +2,7 @@ package com.discordbot.Listener;
 
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.FailureLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
@@ -23,7 +24,7 @@ public class MemberGuildLeave extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member left", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId());
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberLeave");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

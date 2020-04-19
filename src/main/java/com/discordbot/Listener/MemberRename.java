@@ -2,6 +2,7 @@ package com.discordbot.Listener;
 
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.SuccessLogEmbed;
 import com.discordbot.Embeds.WarningLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -33,7 +34,7 @@ public class MemberRename extends ListenerAdapter {
         } else {
             embed.addField("**New name**", event.getUser().getName(), true);
         }
-        embed.setFooter("UserID: " + event.getUser().getId());
+        embed.setFooter("UserID: " + event.getUser().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberRenameNick");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 
@@ -45,7 +46,7 @@ public class MemberRename extends ListenerAdapter {
         embed.setDescription(event.getUser().getAsMention() + "** changed his discord name.**");
         embed.addField("**Old name**", event.getOldName(), true);
         embed.addField("**New name**", event.getNewName(), true);
-        embed.setFooter("UserID: " + event.getUser().getId());
+        embed.setFooter("UserID: " + event.getUser().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberRenameName");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

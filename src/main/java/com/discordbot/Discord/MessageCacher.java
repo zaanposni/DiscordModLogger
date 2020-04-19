@@ -29,4 +29,13 @@ public class MessageCacher {
     public static void removeMessageByID(String messageID)  {
         messages.remove(messageID);
     }
+
+    public static Map<String, Message> getMessages() {
+        return messages;
+    }
+
+    public static Integer getCacheLimit() {
+        return cacheLimit;
+    }
+
 }

@@ -4,6 +4,7 @@ import com.discordbot.Config.Config;
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.MessageCacher;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.WarningLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
@@ -22,21 +23,14 @@ public class MessageUpdate extends ListenerAdapter {
 
     @Override
     public void onMessageUpdate(@Nonnull MessageUpdateEvent event) {
-        // TODO: support media change
-        if (Config.getArray("exclude_channels").contains(event.getChannel().getId())) {
-            // do not log these channels
-            return;
-        }
+        if (Config.getArray("exclude_channels_from_log").contains(event.getChannel().getId()))
+            return; // do not log these channels
 
-        if (event.getAuthor() == event.getJDA().getSelfUser()) {
-            // do not log self
-            return;
-        }
+        if (event.getAuthor() == event.getJDA().getSelfUser())
+            return; // do not log self
 
-        if (event.getMessage().getType() != MessageType.DEFAULT || event.getChannelType() != ChannelType.TEXT) {
-            // do not log system messages and DMs
-            return;
-        }
+        if (event.getMessage().getType() != MessageType.DEFAULT || event.getChannelType() != ChannelType.TEXT)
+            return; // do not log system messages and DMs
 
         LOGGER.info("Received Message update.");
 
@@ -70,7 +64,7 @@ public class MessageUpdate extends ListenerAdapter {
             embed.setImage(downloadURL);
             embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
         }
-        embed.setFooter("AuthorID: " + author.getId() + " | MessageID: " + message.getId());
+        embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMessageUpdate");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

@@ -3,6 +3,7 @@ package com.discordbot.Listener;
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.InviteManager;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.FailureLogEmbed;
 import com.discordbot.Embeds.SuccessLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -29,7 +30,7 @@ public class GuildInvite extends ListenerAdapter {
         embed.setDescription(user.getAsMention() + "** created an invite.**\n" +
                 "Invite: [" + invite.getUrl() + "](" + invite.getUrl() + ")\n" +
                 "Leading to channel: <#" + invite.getChannel().getId() + ">.");
-        embed.setFooter("UserID: " + user.getId() + " | ChannelID: " + event.getChannel().getId());
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventInviteCreate");
         Sender.sendToAllLogChannels(event, embed.build());
         InviteManager.fetchInvites(event.getJDA());
     }
@@ -41,7 +42,7 @@ public class GuildInvite extends ListenerAdapter {
         embed.setDescription("**Invite deleted.**\n" +
                 "Invite: [" + event.getUrl() + "](" + event.getUrl() + ")\n" +
                 "Leading to channel: <#" + event.getChannel().getId() + ">.");
-        embed.setFooter("ChannelID: " + event.getChannel().getId());
+        embed.setFooter("ChannelID: " + event.getChannel().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventInviteDelete");
         Sender.sendToAllLogChannels(event, embed.build());
         InviteManager.fetchInvites(event.getJDA());
     }
