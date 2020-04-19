@@ -18,7 +18,6 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.logging.Logger;
 
 public class MessageReceived extends ListenerAdapter {
@@ -61,7 +60,10 @@ public class MessageReceived extends ListenerAdapter {
         embed.setAuthor(author.getName(),event.getMessage().getJumpUrl(), author.getAvatarUrl());
         embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.** [Jump](" + message.getJumpUrl() + ")");
         if (!message.getContentRaw().isEmpty()) {
-            embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(Integer.parseInt(Config.get("cut_log_messages_to_characters", 1000).toString()), message.getContentRaw().length())), false);
+            embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(1024, message.getContentRaw().length())), false);
+            if (message.getContentRaw().length() > 1024) {
+                embed.addField("**Second part of message**", message.getContentRaw().substring(1024), false);
+            }
         }
         if (message.getAttachments().size() == 1) {
             String url = message.getAttachments().get(0).getProxyUrl();
@@ -71,7 +73,7 @@ public class MessageReceived extends ListenerAdapter {
             embed.setImage(downloadURL);
             embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
         }
-        embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMessageReceive");
+        embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MessageReceive");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

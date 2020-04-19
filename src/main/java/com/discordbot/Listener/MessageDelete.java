@@ -9,7 +9,6 @@ import com.discordbot.Embeds.FailureLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageType;
 import net.dv8tion.jda.api.events.message.MessageDeleteEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
@@ -40,7 +39,10 @@ public class MessageDelete  extends ListenerAdapter {
             embed.setAuthor(oldMessage.getAuthor().getName(), oldMessage.getJumpUrl(), oldMessage.getAuthor().getAvatarUrl());
             embed.setDescription("**Message deleted by " + oldMessage.getAuthor().getAsMention() + " in <#" + event.getChannel().getId() + ">.**");
             if (!oldMessage.getContentRaw().isEmpty()) {
-                embed.addField("**Deleted message**", oldMessage.getContentRaw().substring(0, Math.min(Integer.parseInt(Config.get("cut_log_messages_to_characters", 1000).toString()), oldMessage.getContentRaw().length())), false);
+                embed.addField("**Deleted message**", oldMessage.getContentRaw().substring(0, Math.min(1024, oldMessage.getContentRaw().length())), false);
+                if (oldMessage.getContentRaw().length() > 1024) {
+                    embed.addField("**Second part of deleted message**", oldMessage.getContentRaw().substring(1024), false);
+                }
             }
             if (oldMessage.getAttachments().size() == 1) {
                 String url = oldMessage.getAttachments().get(0).getProxyUrl();
@@ -50,11 +52,11 @@ public class MessageDelete  extends ListenerAdapter {
                 embed.setImage(downloadURL);
                 embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
             }
-            embed.setFooter("UserID: " + oldMessage.getAuthor().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMessageDelete");
+            embed.setFooter("UserID: " + oldMessage.getAuthor().getId() + " | " + UniqueIDHandler.getNewUUID() + " | MessageDelete");
         } else {
             embed.setDescription("**Message deleted in <#" + event.getChannel().getId() + ">.**\n" +
                     "No further information could be fetched.");
-            embed.setFooter("UserID: Not fetched | " + UniqueIDHandler.getNewUUID() + " | EventMessageDelete");
+            embed.setFooter("UserID: Not fetched | " + UniqueIDHandler.getNewUUID() + " | MessageDelete");
         }
         Sender.sendToAllLogChannels(event, embed.build());
     }

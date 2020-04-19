@@ -15,16 +15,16 @@ public class About {
             "GitHub: https://github.com/zaanposni/DiscordModLogger/";
 
     private static final List<String> loggedEvents = new ArrayList<String>() {{
-        add("EventInviteCreate");
-        add("EventInviteDelete");
-        add("EventMemberBan");
-        add("EventMemberUnban");
-        add("EventMemberJoin");
-        add("EventMemberLeave");
-        add("EventMemberRenameNick");
-        add("EventMemberRenameName");
-        add("EventMessageDelete");
-        add("EventMessageReceive");
-        add("EventMessageUpdate");
+        add("InviteCreate");
+        add("InviteDelete");
+        add("MemberBan");
+        add("MemberUnban");
+        add("MemberJoin");
+        add("MemberLeave");
+        add("MemberRenick");
+        add("MemberRename");
+        add("MessageDelete");
+        add("MessageReceive");
+        add("MessageUpdate");
     }};
 }

@@ -34,7 +34,7 @@ public class MemberRename extends ListenerAdapter {
         } else {
             embed.addField("**New name**", event.getUser().getName(), true);
         }
-        embed.setFooter("UserID: " + event.getUser().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberRenameNick");
+        embed.setFooter("UserID: " + event.getUser().getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberRenick");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 
@@ -46,7 +46,7 @@ public class MemberRename extends ListenerAdapter {
         embed.setDescription(event.getUser().getAsMention() + "** changed his discord name.**");
         embed.addField("**Old name**", event.getOldName(), true);
         embed.addField("**New name**", event.getNewName(), true);
-        embed.setFooter("UserID: " + event.getUser().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberRenameName");
+        embed.setFooter("UserID: " + event.getUser().getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberRename");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

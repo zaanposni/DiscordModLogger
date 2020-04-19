@@ -24,7 +24,7 @@ public class MemberGuildBan extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member banned", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberBan");
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberBan");
         event.getGuild().retrieveBan(event.getUser()).queue(success -> {
             if (success.getReason() != null) {
                 embed.addField("**Reason**", success.getReason(), false);

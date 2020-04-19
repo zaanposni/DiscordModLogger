@@ -9,7 +9,7 @@ public class CommandList implements CommandExecutor{
     @Override
     public void onExecute(Command cmd, JDA jda) {
         EmbedBuilder embed = new NeutralLogEmbed();
-        embed.setDescription("**List**\n```\n" + String.join("\n", About.getLoggedEvents()) + "```");
+        embed.setDescription("**List**\nThese events get logged:\n```\n" + String.join("\n", About.getLoggedEvents()) + "```");
         cmd.getChannel().sendMessage(embed.build()).queue();
     }
 
