@@ -27,7 +27,7 @@ public class MemberGuildJoin extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member joined", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("userID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberJoin");
+        embed.setFooter("userID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberJoin");
 
         LOGGER.info("Fetch which invite the member used.");
         event.getJDA().getGuildById(event.getGuild().getId()).retrieveInvites().queue(success -> {

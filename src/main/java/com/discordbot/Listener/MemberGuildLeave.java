@@ -24,7 +24,7 @@ public class MemberGuildLeave extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member left", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberLeave");
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberLeave");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

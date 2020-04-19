@@ -52,10 +52,16 @@ public class MessageUpdate extends ListenerAdapter {
             if (oldMessage.getContentRaw().isEmpty()) {
                 embed.addField("**Old message**", "No content.", false);
             } else {
-                embed.addField("**Old message**", oldMessage.getContentRaw().substring(0, Math.min(Integer.parseInt(Config.get("cut_log_messages_to_characters", 1000).toString()), oldMessage.getContentRaw().length())), false);
+                embed.addField("**Old message**", oldMessage.getContentRaw().substring(0, Math.min(1024, oldMessage.getContentRaw().length())), false);
+                if (oldMessage.getContentRaw().length() > 1024) {
+                    embed.addField("**Second part of old message**", oldMessage.getContentRaw().substring(1024), false);
+                }
             }
         }
-        embed.addField("**Updated message**", message.getContentRaw().substring(0, Math.min(Integer.parseInt(Config.get("cut_log_messages_to_characters", 1000).toString()), message.getContentRaw().length())), false);
+        embed.addField("**Updated message**", message.getContentRaw().substring(0, Math.min(1024, message.getContentRaw().length())), false);
+        if (message.getContentRaw().length() > 1024) {
+            embed.addField("**Second part of updated message**", message.getContentRaw().substring(1024), false);
+        }
         if (message.getAttachments().size() == 1) {
             String url = message.getAttachments().get(0).getProxyUrl();
             int pos = url.indexOf("/attachments/");
@@ -64,7 +70,7 @@ public class MessageUpdate extends ListenerAdapter {
             embed.setImage(downloadURL);
             embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
         }
-        embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMessageUpdate");
+        embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MessageUpdate");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

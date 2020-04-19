@@ -76,7 +76,6 @@ public class Config {
         jsonCFG.put("handle_guild", "guild_id_goes_here");
         jsonCFG.put("activity_string", null);
         jsonCFG.put("log_received_message", true);
-        jsonCFG.put("cut_log_messages_to_characters", 1000);
         jsonCFG.put("bot_command_channels", new ArrayList<String>());
         jsonCFG.put("command_prefix", "_");
 

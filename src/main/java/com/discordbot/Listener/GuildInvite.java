@@ -30,7 +30,7 @@ public class GuildInvite extends ListenerAdapter {
         embed.setDescription(user.getAsMention() + "** created an invite.**\n" +
                 "Invite: [" + invite.getUrl() + "](" + invite.getUrl() + ")\n" +
                 "Leading to channel: <#" + invite.getChannel().getId() + ">.");
-        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventInviteCreate");
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | InviteCreate");
         Sender.sendToAllLogChannels(event, embed.build());
         InviteManager.fetchInvites(event.getJDA());
     }
@@ -42,7 +42,7 @@ public class GuildInvite extends ListenerAdapter {
         embed.setDescription("**Invite deleted.**\n" +
                 "Invite: [" + event.getUrl() + "](" + event.getUrl() + ")\n" +
                 "Leading to channel: <#" + event.getChannel().getId() + ">.");
-        embed.setFooter("ChannelID: " + event.getChannel().getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventInviteDelete");
+        embed.setFooter("ChannelID: " + event.getChannel().getId() + " | " + UniqueIDHandler.getNewUUID() + " | InviteDelete");
         Sender.sendToAllLogChannels(event, embed.build());
         InviteManager.fetchInvites(event.getJDA());
     }

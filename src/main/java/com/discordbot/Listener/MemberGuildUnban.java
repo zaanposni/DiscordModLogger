@@ -25,7 +25,7 @@ public class MemberGuildUnban extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member unbanned", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberUnban");
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberUnban");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

@@ -1,5 +1,7 @@
 package com.discordbot.LocalUtils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -11,7 +13,7 @@ public class ArrayObjectUtil {
      * @param obj object to convert
      * @return converted arraylist, may be empty
      */
-    public static List<?> convertObjectToList(Object obj) {
+    public static @NotNull List<?> convertObjectToList(@NotNull Object obj) {
         List<?> list = new ArrayList<>();
         if (obj.getClass().isArray()) {
             list = Arrays.asList((Object[])obj);
