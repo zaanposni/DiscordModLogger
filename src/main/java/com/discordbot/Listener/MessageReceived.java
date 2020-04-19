@@ -1,10 +1,14 @@
 package com.discordbot.Listener;
 
+import com.discordbot.Commands.CommandHandler;
 import com.discordbot.Config.Config;
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.MessageCacher;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.NeutralLogEmbed;
+import com.discordbot.Exceptions.CommandCreationFailedException;
+import com.discordbot.Exceptions.CommandExecuteException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
@@ -23,20 +27,23 @@ public class MessageReceived extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
-        if (Config.getArray("exclude_channels").contains(event.getChannel().getId())) {
-            // do not log these channels
-            return;
+        if (event.getAuthor() == event.getJDA().getSelfUser())
+            return; // do not log self
+
+        if (Config.getArray("bot_command_channels").contains(event.getChannel().getId())) {
+            try {
+                CommandHandler.handle(event);
+            } catch (CommandCreationFailedException ignored) {
+            } catch (CommandExecuteException e) {
+                e.printStackTrace();
+            }
         }
 
-        if (event.getAuthor() == event.getJDA().getSelfUser()) {
-            // do not log self
-            return;
-        }
+        if (Config.getArray("exclude_channels_from_log").contains(event.getChannel().getId()))
+            return; // do not log these channels
 
-        if (event.getMessage().getType() != MessageType.DEFAULT || event.getChannelType() != ChannelType.TEXT) {
-            // do not log system messages and DMs
-            return;
-        }
+        if (event.getMessage().getType() != MessageType.DEFAULT || event.getChannelType() != ChannelType.TEXT)
+            return; // do not log system messages and DMs
 
         LOGGER.info("Received Message.");
 
@@ -64,7 +71,7 @@ public class MessageReceived extends ListenerAdapter {
             embed.setImage(downloadURL);
             embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
         }
-        embed.setFooter("AuthorID: " + author.getId() + " | MessageID: " + message.getId());
+        embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMessageReceive");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }

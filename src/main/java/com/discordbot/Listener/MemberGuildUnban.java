@@ -2,6 +2,7 @@ package com.discordbot.Listener;
 
 import com.discordbot.Discord.DiscordClient;
 import com.discordbot.Discord.Sender;
+import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.FailureLogEmbed;
 import com.discordbot.Embeds.SuccessLogEmbed;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -24,7 +25,7 @@ public class MemberGuildUnban extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member unbanned", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId());
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | EventMemberUnban");
         Sender.sendToAllLogChannels(event, embed.build());
     }
 }
