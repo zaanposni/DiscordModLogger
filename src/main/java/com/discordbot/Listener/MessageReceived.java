@@ -9,6 +9,7 @@ import com.discordbot.Discord.UniqueIDHandler;
 import com.discordbot.Embeds.NeutralLogEmbed;
 import com.discordbot.Exceptions.CommandCreationFailedException;
 import com.discordbot.Exceptions.CommandExecuteException;
+import com.discordbot.Meta.VersionInfo;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Message;
@@ -58,20 +59,26 @@ public class MessageReceived extends ListenerAdapter {
         Message message = event.getMessage();
         User author = event.getAuthor();
         embed.setAuthor(author.getName(),event.getMessage().getJumpUrl(), author.getAvatarUrl());
-        embed.setDescription("**Message sent by " + author.getAsMention() + " in " + "<#" + event.getChannel().getId() + ">.** [Jump](" + message.getJumpUrl() + ")");
+        embed.setDescription("**Message by " + author.getAsMention() + " sent in " + "<#" + event.getChannel().getId() + ">.** [Jump](" + message.getJumpUrl() + ")");
         if (!message.getContentRaw().isEmpty()) {
             embed.addField("**New message**", message.getContentRaw().substring(0, Math.min(1024, message.getContentRaw().length())), false);
             if (message.getContentRaw().length() > 1024) {
                 embed.addField("**Second part of message**", message.getContentRaw().substring(1024), false);
             }
         }
-        if (message.getAttachments().size() == 1) {
-            String url = message.getAttachments().get(0).getProxyUrl();
-            int pos = url.indexOf("/attachments/");
-            String downloadURL = "https://cdn.discordapp.com" + url.substring(pos);
-            String filename = message.getAttachments().get(0).getFileName();
-            embed.setImage(downloadURL);
-            embed.addField("Uploaded file", "[" + filename + "](" + downloadURL + ")", false);
+        if (!message.getEmbeds().isEmpty()) {
+            embed.addField("**Embeds**", "Found " + message.getEmbeds().size() + " embed(s). Not displayable for version " + VersionInfo.getLongVersion(), false);
+        }
+        if (!message.getAttachments().isEmpty()) {
+            embed.setImage(message.getAttachments().get(0).getProxyUrl()); // most likely there is only one image so it will be displayed on the embed
+            StringBuilder attachments = new StringBuilder();
+            for (Message.Attachment attachment: message.getAttachments()) {
+                String url = attachment.getProxyUrl();
+                String downloadURL = "https://cdn.discordapp.com" + url.substring(url.indexOf("/attachments/"));
+                String filename = attachment.getFileName();
+                attachments.append("[").append(filename).append("](").append(downloadURL).append(")\n");
+            }
+            embed.addField("**Uploaded files**", attachments.toString(), false);
         }
         embed.setFooter("UserID: " + author.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MessageReceive");
         Sender.sendToAllLogChannels(event, embed.build());
