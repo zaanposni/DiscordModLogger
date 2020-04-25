@@ -9,6 +9,6 @@ import java.util.logging.Logger;
 public interface CommandExecutor {
     Logger LOGGER = Logger.getLogger(DiscordClient.class.getName());
     void onExecute(Command cmd, JDA jda);
-    default String helpString() { return null; }
+    String helpString();
 }
 

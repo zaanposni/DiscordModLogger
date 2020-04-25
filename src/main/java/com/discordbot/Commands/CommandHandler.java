@@ -29,18 +29,14 @@ public class CommandHandler {
         catch (IndexOutOfBoundsException ex) {
             throw new CommandCreationFailedException("Failed to create Command. Most likely due to an invalid invoke.");
         }
-        LOGGER.info("Invoke found: " + cmd.getInvoke());
         if (commands.containsKey(cmd.getInvoke())) {
             CommandExecutor ex = commands.get(cmd.getInvoke());
             try {
                 LOGGER.info(cmd.getAuthor().getAsTag() + " issued " + cmd.getInvoke());
-                LOGGER.info("Executing command " + cmd.getInvoke());
                 ex.onExecute(cmd, event.getJDA());
             } catch (Exception e) {
                 throw new CommandExecuteException("Failed to execute command " + cmd.getInvoke(), e);
             }
-        } else {
-            LOGGER.info("No command found for this invoke");
         }
     }
 }
