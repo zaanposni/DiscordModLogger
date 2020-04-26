@@ -23,7 +23,6 @@ public class CommandHandler {
     public static void handle(MessageReceivedEvent event) throws CommandCreationFailedException, CommandExecuteException {
         Command cmd;
         try {
-            LOGGER.info("Try to parse received message to command");
             cmd = new Command(event);
         }
         catch (IndexOutOfBoundsException ex) {
