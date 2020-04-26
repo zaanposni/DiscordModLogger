@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Message;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -74,19 +75,27 @@ public class InviteManager {
         if (usedInvite == null) { // if not found yet, this means the invite expired
             Set<String> oldInvites = invites.keySet();
             Set<String> updatedInvites = newInvites.stream().map(Invite::getCode).collect(Collectors.toSet());
-            oldInvites.removeAll(updatedInvites); // find  difference between old and new invite list, difference are expired invites
-            if (oldInvites.size() == 1) { // found expired and used invite
-                String i = oldInvites.toArray()[0].toString();
+            oldInvites.removeAll(updatedInvites); // find difference between old and new invite list, difference are expired invites
+            Set<String> diff = oldInvites;
+            if (diff.size() == 1) { // found expired and used invite
+                String i = diff.toArray()[0].toString();
                 usedInvite = invites.get(i);
-                invites.remove(i);
-            } else if (oldInvites.size() > 1) { // cannot allocate
-                for (String i : oldInvites) {
-                    invites.remove(i);
+            } else if (diff.size() > 1) { // cannot allocate
+                for (String i : diff) {
+                    Invite tempInv = invites.get(i);
+                    if (tempInv.getMaxAge() != 0) {
+                        if (tempInv.getTimeCreated().plusSeconds(tempInv.getMaxAge()).isBefore(OffsetDateTime.now())) {
+                            diff.remove(i);  // if invite expired by time already
+                        }
+                    }
                 }
-                return null;
+                if (diff.size() == 1) {  // if all expired by time instead of one
+                    String i = diff.toArray()[0].toString();
+                    usedInvite = invites.get(i);
+                } else {
+                    return null;
+                }
             }
-        } else {
-            invites.put(usedInvite.getCode(), usedInvite);
         }
         return usedInvite;
     }
