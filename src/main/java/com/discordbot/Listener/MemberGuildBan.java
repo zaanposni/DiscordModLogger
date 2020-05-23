@@ -16,6 +16,7 @@ import java.util.logging.Logger;
 public class MemberGuildBan extends ListenerAdapter {
 
     private final static Logger LOGGER = Logger.getLogger(DiscordClient.class.getName());
+    private final static String eventName = "MemberBan";
 
     @Override
     public void onGuildBan(@Nonnull GuildBanEvent event) {
@@ -24,16 +25,18 @@ public class MemberGuildBan extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member banned", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberBan");
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | " + eventName);
         event.getGuild().retrieveBan(event.getUser()).queue(success -> {
             if (success.getReason() != null) {
                 embed.addField("**Reason**", success.getReason(), false);
             }
             Sender.sendToAllLogChannels(event, embed.build());
+            Sender.sendToAllWebhhok("An user got banned!", eventName);
         }, failure -> {
             LOGGER.info("Failed to fetch ban reason.");
             embed.addField("**Reason**", "No reason given", false);
             Sender.sendToAllLogChannels(event, embed.build());
+            Sender.sendToAllWebhhok("An user got banned!", eventName);
         });
     }
 }

@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.Event;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 public class Sender {
@@ -22,6 +23,20 @@ public class Sender {
                 channel.sendMessage(embed).queue();
             } catch(NullPointerException ex) {
                 LOGGER.warning("Channel \"" + logChannelID.toString() + "\" not found");
+            }
+        }
+    }
+
+    public static void sendToAllWebhhok(String message, String eventName) {
+        if (!Config.getArray("log_events_to_discord_webhook").contains(eventName))
+            return;
+        for (Object webhookURL : Config.getArray("log_discord_webhook_urls")) {
+            WebhookHandler webhook = new WebhookHandler(webhookURL.toString());
+            webhook.setContent(message);
+            try {
+                webhook.execute();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
