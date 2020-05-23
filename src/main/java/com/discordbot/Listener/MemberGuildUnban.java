@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 public class MemberGuildUnban extends ListenerAdapter {
 
     private final static Logger LOGGER = Logger.getLogger(DiscordClient.class.getName());
+    private final static String eventName = "MemberUnban";
 
     @Override
     public void onGuildUnban(@Nonnull GuildUnbanEvent event) {
@@ -25,7 +26,8 @@ public class MemberGuildUnban extends ListenerAdapter {
         User user = event.getUser();
         embed.setAuthor("Member unbanned", user.getAvatarUrl(), user.getAvatarUrl());
         embed.setDescription(user.getAsMention() + " | " + user.getAsTag());
-        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | MemberUnban");
+        embed.setFooter("UserID: " + user.getId() + " | " + UniqueIDHandler.getNewUUID() + " | " + eventName);
         Sender.sendToAllLogChannels(event, embed.build());
+        Sender.sendToAllWebhhok("An user got unbanned!", eventName);
     }
 }

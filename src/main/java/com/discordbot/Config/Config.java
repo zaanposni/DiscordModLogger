@@ -71,6 +71,8 @@ public class Config {
         JSONObject jsonCFG = new JSONObject();
         jsonCFG.put("discord_bot_token", "bot_token_goes_here");
         jsonCFG.put("log_to_channels", new ArrayList<String>());
+        jsonCFG.put("log_events_to_discord_webhook", new ArrayList<String>());
+        jsonCFG.put("log_discord_webhook_urls", new ArrayList<String>());
         jsonCFG.put("exclude_channels_from_log", new ArrayList<String>());
         jsonCFG.put("cache_messages", 1000);
         jsonCFG.put("handle_guild", "guild_id_goes_here");
