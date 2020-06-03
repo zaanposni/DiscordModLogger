@@ -1,0 +1,14 @@
+{
+    "cache_messages": 10000,
+    "handle_guild": "guild id",
+    "log_to_channels": ["channel ids"],
+    "exclude_channels_from_log": ["channel ids"],
+    "discord_bot_token": "bot token",
+    "activity_string": "Minecraft 1.15",
+    "log_received_message": false,
+    "bot_command_channels": ["channel ids"],
+    "command_prefix": "_",
+    "log_discord_webhook_urls": ["url"],
+    "log_events_to_discord_webhook": ["MemberBan", "MemberUnban"],
+    "log_poke_role_on_discord_webhook": "role id"
+}
