@@ -6,10 +6,10 @@ WORKDIR /app
 
 RUN mvn -f /app/pom.xml clean package
 
-# copy config.json if it exists
-
 FROM openjdk:11-jre-slim
 COPY --from=build /app/target/discordModLogger.jar /bin
 COPY default-config.json config.json* /bin/
+# copy config.json if it exists
+
 WORKDIR /bin  
 ENTRYPOINT ["java","-jar","discordModLogger.jar"]
