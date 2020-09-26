@@ -1,4 +1,4 @@
-# DiscordMogLogger
+# DiscordModLogger
 
 This is a simple but scaleable discord bot that helps moderators of a guild by logging all relevant events.
 
