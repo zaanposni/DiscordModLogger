@@ -53,7 +53,7 @@ public class MessageDelete extends ListenerAdapter {
                 StringBuilder attachments = new StringBuilder();
                 for (Message.Attachment attachment: oldMessage.getAttachments()) {
                     String url = attachment.getProxyUrl();
-                    String downloadURL = "https://cdn.discordapp.com" + url.substring(url.indexOf("/attachments/"));
+                    String downloadURL = "https://media.discordapp.net" + url.substring(url.indexOf("/attachments/"));
                     String filename = attachment.getFileName();
                     attachments.append("[").append(filename).append("](").append(downloadURL).append(")\n");
                 }
